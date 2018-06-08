@@ -1,13 +1,13 @@
 // codingTask2.cpp : Defines the entry point for the console application.
 //
-#ifdef WIN32
+//#ifdef WIN32
 #include "stdafx.h"
-#endif
+//#endif
 #include <assert.h>
 #include <stdlib.h>
 #include "listdelsame.h"
 
-#pragma comment(lib, "../Debug/marking.lib")
+#pragma comment(lib, "../x64/Debug/marking.lib")
 void examination(void);
 
 bool DeteleNode(struct Node **pHeader, int Value){
