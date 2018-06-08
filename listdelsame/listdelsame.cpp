@@ -42,7 +42,9 @@ int main()
     examination();
     marking_test();
 
+#ifdef WIN32
 	system("pause");
+#endif
 	return 0;
 }
 

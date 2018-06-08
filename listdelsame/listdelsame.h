@@ -15,7 +15,7 @@
 #include <stdlib.h>
 
 
-#ifdef DEBUG_ON
+#ifdef DEBUG
 #define debug_log printf
 #else
 #define debug_log
