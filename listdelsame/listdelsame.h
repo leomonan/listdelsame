@@ -1,5 +1,5 @@
 // codingTask2.cpp : Defines the entry point for the console application.
-//i
+//irr::
 #ifndef _LINK_DELETE_SAME_
 #define _LINK_DELETE_SAME_
 
