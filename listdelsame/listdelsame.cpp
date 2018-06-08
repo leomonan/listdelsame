@@ -1,8 +1,5 @@
 // codingTask2.cpp : Defines the entry point for the console application.
 //
-//#ifdef WIN32
-#include "stdafx.h"
-//#endif
 #include <assert.h>
 #include <stdlib.h>
 #include "listdelsame.h"
