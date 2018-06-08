@@ -32,7 +32,7 @@ typedef struct{
 	float (*check_func)(void*);
 	void * data;
 	float  score;
-	char* name;
+	const char* name;
 }st_check_case;
 
 extern bool g_watch_mem; 
