@@ -7,6 +7,8 @@
 #pragma comment(lib, "../x64/Debug/marking.lib")
 void examination(void);
 
+// function description: 
+// delete list's(input by pHead) node(nodes) that the node's data equal to "Value" 
 bool DeteleNode(struct Node **pHeader, int Value){
     //TODO: please add code here.
     
