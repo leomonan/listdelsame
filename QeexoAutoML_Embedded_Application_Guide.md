@@ -235,7 +235,7 @@ void NativelInitSensor(void)
 
 
 
- ### Step 3. Run `int QxAutoMLWork()` in the your application
+ ### Step 3. Run `int QxAutoMLWork()` in your application
   After finished all of above steps, function `int QxAutoMLWork()` gets ready to run in any thread loop that you want to do the classification. 
 
 You can call the functions like this:
