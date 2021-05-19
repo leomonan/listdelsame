@@ -257,4 +257,8 @@ void applicatioin_thread_loop()
 }
 ```
 
-  Congratulations! The integration of AutoML static engine library is done, if everything runs okay, you should see the classification runs as good as what you see in WebUI's model LIVE test.
+
+
+  Congratulations! The integration of AutoML static engine library is done, now please compile your project to build and link all funstions for classification, if everything goes okay, you should see the classification runs as good as what you see in WebUI's model LIVE test.
+  
+  Tips:  If you got link error like "undefined reference to `arm_cfft_f32'", please modify your build configuration to add CMSIS arm_cortexM4lf_math library to your target linking.
