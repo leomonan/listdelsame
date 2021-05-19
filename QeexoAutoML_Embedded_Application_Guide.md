@@ -179,7 +179,7 @@ Fill sensor data to Qeexo classify engine.
       
   Parameters:
   
-`QXOSensorType type`:  Sensor type Enum defined in QxAutoMLUser.h
+`QXOSensorType type`:  Sensor type defined in QxAutoMLUser.h
      
 ` void* data`:  The data buff pointer, for 3-axis sensor data, the data structure is shown as below:
      
