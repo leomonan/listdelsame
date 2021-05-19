@@ -99,7 +99,7 @@ You can call this function to fill the sensor data to static engine library in e
 
 🔹 1. `int QxAutoMLWork()` 
 
-It is a function implemented by customer which will run in a thread loop, `int QxAutoMLWork()` calls `void QxFillSensorData()` to fill sensor data to the classify engine in each ODR circle, and call `in QxClassify()` in each PRED_CLASSIFICATION_INTERVAL_IN_MSECS interval which defined `in QxAutoMLUser.h`
+`int QxAutoMLWork()` is a function implemented by customer which will run in a thread loop, it calls `void QxFillSensorData()` to fill sensor data to the classify engine in each ODR circle, and call `in QxClassify()` in each PRED_CLASSIFICATION_INTERVAL_IN_MSECS interval which defined in 'QxAutoMLUser.h'
 
 ![](https://github.com/leomonan/listdelsame/blob/master/QeexoAutomlStaticEngineUserProcess.png?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
 
