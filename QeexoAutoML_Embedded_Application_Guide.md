@@ -32,7 +32,7 @@ This file inclde the following parts:
  ##### Sensor Configuration
  1. Enabled Sensor Types
  
- If the type of sensor is enabled in WebUI, the according sensor macro will be defined in this file, available sensor types are:
+ If the type of sensor(s) is(are) enabled in WebUI, the according sensor macro(s) will be defined in this file, available sensor types are:
 ```
       QXAUTOMLCONFIG_SENSOR_ENABLE_ACCEL
       QXAUTOMLCONFIG_SENSOR_ENABLE_GYRO
