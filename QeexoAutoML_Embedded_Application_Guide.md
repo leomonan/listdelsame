@@ -21,7 +21,7 @@ By extracting the .zip file, you will get two files:
 #### 🔹 libQxClassifyEngine.a 
 This is the static engine library file that contains the classify interfaces and can be linked to your target device binary in your own project.
            
-A few interfaces are needed to be implemented to port the classify function to your project, that part is described in: ![](https://github.com/leomonan/listdelsame/blob/master/download_the_static_library_package.jpg?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
+A few interfaces are needed to be implemented to port the classify function to your project, that part is described in: https://github.com/leomonan/listdelsame/blob/master/QeexoAutoML_Embedded_Application_Guide.md#2-implement-essential-functions-to-fill-sensor-data-and-call-classification-api-from-static-engine-library
     
     
 #### 🔹 QxAutoMLUser.h
