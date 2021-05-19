@@ -243,9 +243,7 @@ void applicatioin_thread_loop()
 }
 ```
 
-
-
-  Congratulations ! Now all the Embedded SDK porting job has finished. Please deliver your customized SDK firmware project to Qeexo and you will see your device appear on AutoML platform very soon!
+  Congratulations! the intregration of AutoML static engine library is done, if everything runs okay, you should see the classification runs as good as what you see in WebUI's model LIVE test.
 
 
 
