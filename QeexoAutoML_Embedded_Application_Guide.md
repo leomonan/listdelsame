@@ -8,7 +8,7 @@
 
 You can Download the Package 
 
-![](https://raw.githubusercontent.com/qeexo/Embedded_HAL_SDK/master/Docs/AutoML_Embedded_SDK.png?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
+![](https://github.com/leomonan/listdelsame/blob/master/download_the_static_library_package.jpg?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
 
   Framework layer and Apps layer contain logic of setting up data logger and inference application running on board. These two layers can be reused directly on different device platforms and don't need any changes during porting. 
 
