@@ -1,16 +1,16 @@
 # Qeexo AutoML Static Library Application Guide
 
-  Qeexo AutoML Static Library is genereated by Automl WebUI, which provdes the classify functions that was trained with the data collected by Automl WebUI's Data Collection page, you can easily get this library file from Automl WebUI, and easily apply the Qeexo AutoML classify technology by integrating the static library to your embeded device's binary.
+  Qeexo AutoML Static Library is genereated by Automl WebUI, which provides the classify functions that was trained with the data collected by Automl WebUI's Data Collection page, you can easily get this library file from Automl WebUI, and easily apply the Qeexo AutoML classify technology by integrating the static library to your embeded device's binary.
 
   This document is intended as a help to the integration process.
 
-### Get the static library package from WebUI
+### 1. Get the static library package from WebUI
 
 You can download the static library package from the  Automl WebUI's Models page, as shown in below picture: 
 
 ![](https://github.com/leomonan/listdelsame/blob/master/download_the_static_library_package.jpg?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
 
-Please click 'save .zip'  to save the static library package to your local path, the file will be saved with the name of {board_name}_{algorithm}\_{version}_static.zip. Take STWINKT1B board as example, if you choose the gbm algorithm to train model, you will get 'STWIN-gbm-1.0-static.zip'. 
+Please click 'save .zip'  to save the static library package to your local path, the file will be saved with the name of {board_name}_{algorithm}\_{version}_static.zip,  take STWINKT1B board as example, if you choose the gbm algorithm to train model, you will get 'STWIN-gbm-1.0-static.zip'. 
 
 By extracting the .zip file, you will get two files:
 ```
@@ -18,17 +18,18 @@ By extracting the .zip file, you will get two files:
 ├── QxAutoMLUser.h
 ```
 
-###### 1. libQxClassifyEngine.a 
-    This is the static library file that contains the classify interfaces and can be linked to your target device binary in your own device compiling project
+##### 🔹 libQxClassifyEngine.a 
+This is the static library file that contains the classify interfaces and can be linked to your target device binary in your own device compiling project
            
-    You will need to implement some interfaces to port the classify function to your project, that part is described in: ![](https://github.com/leomonan/listdelsame/blob/master/download_the_static_library_package.jpg?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
+You will need to implement some interfaces to port the classify function to your project, that part is described in: ![](https://github.com/leomonan/listdelsame/blob/master/download_the_static_library_package.jpg?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
     
     
-###### 2. QxAutoMLUser.h
+##### 🔹 QxAutoMLUser.h
 This file contains the sensor configurations and API declarations of the static library
- ##### Sensor configuration:
+ ###### Sensor configuration
  1. Enabled Sensor Types
-       Available sensor types are
+Available sensor types are:
+```
       QXAUTOMLCONFIG_SENSOR_ENABLE_ACCEL
       QXAUTOMLCONFIG_SENSOR_ENABLE_GYRO
       QXAUTOMLCONFIG_SENSOR_ENABLE_MAG
@@ -43,20 +44,79 @@ This file contains the sensor configurations and API declarations of the static 
       QXAUTOMLCONFIG_SENSOR_ENABLE_MICROPHONE
       QXAUTOMLCONFIG_SENSOR_ENABLE_MICROPHONE_ANALOG
       QXAUTOMLCONFIG_SENSOR_ENABLE_LIGHT
-   
+```
  2. ENUM  QXOSensorType
 This type enumerated which sensor type that the data come from.
-  
+```
+    typedef enum {
+      SENSOR_TYPE_NONE = 0, /*!< None defined sensor */
+      SENSOR_TYPE_ACCEL, /*!< Default accelerometer sensor */
+      SENSOR_TYPE_GYRO, /*!< Default gyroscope sensor */
+      SENSOR_TYPE_MAG, /*!< Megnotometer sensor */
+      ...
+      SENSOR_TYPE_MAX
+    }QXOSensorType;
+```
 3. Classify Interfaces Declaration
   There are two interfaces that is provided by the library, they are
-  
-     1.   void QxFillSensorData(QXOSensorType type, void* data, int data_len);
-         --Call this function to fill the sensor data in each ODR circle.
-         
-     2. int QxClassify(void); 
-         --Trigger the classify action in static library
+` 
+1.void QxFillSensorData(QXOSensorType type, void* data, int data_len);
+   //Call this function to fill the sensor data to static library in each ODR circle.
+`
 
-### Board requirement
+```
+     2. int QxClassify(void); 
+         // Trigger the classify action in static library
+```
+
+3. Classify interval
+   This macro defines the calling interval of `int QxClassify(void)`
+
+Example: 
+```
+#define PRED_CLASSIFICATION_INTERVAL_IN_MSECS 153
+```
+   '153' indicates `int QxClassify(void)` should be called in each 153 millisecond
+
+### 2. Implemet `int QxAutoMLWork()` to fill sensor data and call classification API from static library
+`int QxAutoMLWork()` is a function implemented by customer that should run in a thread loop, it calls `void QxFillSensorData()` to fill sensor data to the classify engine in each ODR circle, and call `in QxClassify()` in each PRED_CLASSIFICATION_INTERVAL_IN_MSECS interval which defined `in QxAutoMLUser.h`
+
+![](https://github.com/leomonan/listdelsame/blob/master/QeexoAutomlStaticEngineUserProcess.png?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
+
+Here is a example code of `int QxAutoMLWork()` , in this example, we use 100HZ sensor ODR to fill sensor data 
+
+```
+    int QxAutoMLWork()
+    {
+        static int time_sum = 0;
+        static int result = -1;
+
+        /* 5ms for 100HZ sensor ODR */
+        const int work_interval = 5;   
+
+        /* Get current tick in ms */
+        int tick = NativeOSGetTick();
+
+        /* Fill sensor data to classify engine */
+        NativeFillDataFrame();
+
+        time_sum += work_interval;
+        if (time_sum >= PRED_CLASSIFICATION_INTERVAL_IN_MSECS) { 
+             /* Call classify periodically each pred_interval */
+            result = QxClassify();
+            time_sum = 0; 
+        }
+            
+        int diff = NativeOSGetTick() - tick;
+
+        if(diff < work_interval) {
+            NativeOSDelay(work_interval - diff);
+        }
+
+        return result;
+    }
+```
+
 
   Your device board should at least have: 
 
