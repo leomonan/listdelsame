@@ -257,4 +257,4 @@ void applicatioin_thread_loop()
 }
 ```
 
-  Congratulations! the integration of AutoML static engine library is done, if everything runs okay, you should see the classification runs as good as what you see in WebUI's model LIVE test.
+  Congratulations! The integration of AutoML static engine library is done, if everything runs okay, you should see the classification runs as good as what you see in WebUI's model LIVE test.
