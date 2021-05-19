@@ -1,18 +1,60 @@
 # Qeexo AutoML Static Library Application Guide
 
-  Qeexo AutoML Static Library are genereated by Automl WebUI, Which provde the classify interface that trained with the data collected by Automl WebUI, you can easily get this library file from Automl WebUI, and easily apply the Qeexo AutoML classify technology by integrating the static library to your embeded device.
+  Qeexo AutoML Static Library is genereated by Automl WebUI, which provdes the classify functions that was trained with the data collected by Automl WebUI's Data Collection page, you can easily get this library file from Automl WebUI, and easily apply the Qeexo AutoML classify technology by integrating the static library to your embeded device's binary.
 
   This document is intended as a help to the integration process.
 
 ### Get the static library package from WebUI
 
-You can Download the Package 
+You can download the static library package from the  Automl WebUI's Models page, as shown in below picture: 
 
 ![](https://github.com/leomonan/listdelsame/blob/master/download_the_static_library_package.jpg?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
 
-  Framework layer and Apps layer contain logic of setting up data logger and inference application running on board. These two layers can be reused directly on different device platforms and don't need any changes during porting. 
+Please click 'save .zip'  to save the static library package to your local path, the file will be saved with the name of {board_name}_{algorithm}\_{version}_static.zip. Take STWINKT1B board as example, if you choose the gbm algorithm to train model, you will get 'STWIN-gbm-1.0-static.zip'. 
 
-  HAL layer encapsulates all the interfaces to hardware and platform specific code, which need to be implemented in porting process.
+By extracting the .zip file, you will get two files:
+```
+├── libQxClassifyEngine.a 
+├── QxAutoMLUser.h
+```
+
+###### 1. libQxClassifyEngine.a 
+    This is the static library file that contains the classify interfaces and can be linked to your target device binary in your own device compiling project
+           
+    You will need to implement some interfaces to port the classify function to your project, that part is described in: ![](https://github.com/leomonan/listdelsame/blob/master/download_the_static_library_package.jpg?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
+    
+    
+###### 2. QxAutoMLUser.h
+This file contains the sensor configurations and API declarations of the static library
+ ##### Sensor configuration:
+ 1. Enabled Sensor Types
+       Available sensor types are
+      QXAUTOMLCONFIG_SENSOR_ENABLE_ACCEL
+      QXAUTOMLCONFIG_SENSOR_ENABLE_GYRO
+      QXAUTOMLCONFIG_SENSOR_ENABLE_MAG
+      QXAUTOMLCONFIG_SENSOR_ENABLE_PRESSURE
+      QXAUTOMLCONFIG_SENSOR_ENABLE_PROXIMITY
+      QXAUTOMLCONFIG_SENSOR_ENABLE_AMBIENT
+      QXAUTOMLCONFIG_SENSOR_ENABLE_HUMIDITY
+      QXAUTOMLCONFIG_SENSOR_ENABLE_TEMPERATURE
+      QXAUTOMLCONFIG_SENSOR_ENABLE_TEMPERATURE_EXT1
+      QXAUTOMLCONFIG_SENSOR_ENABLE_ACCEL_LOWPOWER
+      QXAUTOMLCONFIG_SENSOR_ENABLE_ACCEL_HIGHSENSITIVE
+      QXAUTOMLCONFIG_SENSOR_ENABLE_MICROPHONE
+      QXAUTOMLCONFIG_SENSOR_ENABLE_MICROPHONE_ANALOG
+      QXAUTOMLCONFIG_SENSOR_ENABLE_LIGHT
+   
+ 2. ENUM  QXOSensorType
+This type enumerated which sensor type that the data come from.
+  
+3. Classify Interfaces Declaration
+  There are two interfaces that is provided by the library, they are
+  
+     1.   void QxFillSensorData(QXOSensorType type, void* data, int data_len);
+         --Call this function to fill the sensor data in each ODR circle.
+         
+     2. int QxClassify(void); 
+         --Trigger the classify action in static library
 
 ### Board requirement
 
@@ -32,41 +74,7 @@ You can Download the Package
 
   Qeexo AutoML Embedded SDK release package includes directories as follow:
 
-```
-├── Apps
-│   └── QxDataLogApp.cpp
-├── Examples
-│   └── datalog
-│       ├── Inc
-│       │   ├── QxAutoMLConfig.h
-│       │   └── main.h
-│       └── Src
-│           └── main.cpp
-├── Framework
-│   ├── QxApplication.cpp
-│   ├── QxAutoMLFramework.cpp
-│   └── QxSensors.cpp
-├── Hal_Impl
-│   ├── QxBTHal_XXX.c
-│   ├── QxOS_XXX.c
-│   ├── QxSensorHal_XXX.c
-│   └── QxUSBHal_XXX.c
-├── Include
-│   ├── Apps
-│   │   └── QxDataLogApp.h
-│   ├── Framework
-│   │   ├── QxApplication.h
-│   │   ├── QxAutoMLFramework.h
-│   │   └── QxSensors.h
-│   ├── Hal
-│   │   ├── QxBTHal.h
-│   │   ├── QxOS.h
-│   │   ├── QxSensorHal.h
-│   │   └── QxUSBHal.h
-│   └── QxTypeDefs.h
-├── Test
-├── Docs
-```
+
 
   Copy folders `Apps`, `Framework`, `Include` and `Hal_Impl`  to board's firmware project. Implement Sensor, USB and OS interfaces under `Hal_Impl` directory. All the HAL files are implemented in **C** language.
 
