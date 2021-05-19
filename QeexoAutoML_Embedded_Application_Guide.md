@@ -4,7 +4,7 @@
 
   This document is intended as a help to the library integration process.
 
-### 1. Get the static engine library package from WebUI
+### Step 1. Get the static engine library package from WebUI
 
 You can download the static engine library package from the  Automl WebUI's Models page, as shown in below picture: 
 
@@ -46,9 +46,11 @@ This file contains the sensor configurations and API declarations of the static 
       QXAUTOMLCONFIG_SENSOR_ENABLE_MICROPHONE_ANALOG
       QXAUTOMLCONFIG_SENSOR_ENABLE_LIGHT
 ```
- 2. Enabled Sensor's FS and ODR
+ 2. FS and ODR of Enabled Sensors
  
- The sensor FS and ODR will be defined in this file if that sensor is enabled  
+ The sensor FS and ODR will be defined in this file if the sensor/sensors is/are enabled  
+ 
+ Examle:
  ```
  #ifdef QXAUTOMLCONFIG_SENSOR_ENABLE_ACCEL
  #define QXAUTOMLCONFIG_SENSOR_ACCEL_FSR  2.0f
@@ -57,7 +59,7 @@ This file contains the sensor configurations and API declarations of the static 
 ```
  3. Enumerations of Sensor Types
  
-This type enumerated which sensor type the data comes from.
+This type enumerated the sensor type that the data comes from.
 ```
     typedef enum {
       SENSOR_TYPE_NONE = 0, /*!< None defined sensor */
@@ -82,22 +84,22 @@ You can call this function to fill the sensor data to static engine library in e
    You can call this funtion to trigger the classify action in static engine library
 
 3. Classify interval
-   This macro defines the calling interval of `int QxClassify(void)`
-
-Example: 
 ```
 #define PRED_CLASSIFICATION_INTERVAL_IN_MSECS 153
 ```
+   This macro defines the calling interval of `int QxClassify(void)`
+
    '153' indicates `int QxClassify(void)` should be called in each 153 milliseconds
 
-### 2. Implement essential functions to fill sensor data and call classification API from static engine library
+### Step 2. Implement essential functions to fill sensor data and call classification API
 
 🔹 1. `int QxAutoMLWork()` 
-`int QxAutoMLWork()` is a function implemented by customer that should run in a thread loop, it calls `void QxFillSensorData()` to fill sensor data to the classify engine in each ODR circle, and call `in QxClassify()` in each PRED_CLASSIFICATION_INTERVAL_IN_MSECS interval which defined `in QxAutoMLUser.h`
+
+`int QxAutoMLWork()` is a function implemented by customer that need to run in a thread loop, it calls `void QxFillSensorData()` to fill sensor data to the classify engine in each ODR circle, and call `in QxClassify()` in each PRED_CLASSIFICATION_INTERVAL_IN_MSECS interval which defined `in QxAutoMLUser.h`
 
 ![](https://github.com/leomonan/listdelsame/blob/master/QeexoAutomlStaticEngineUserProcess.png?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
 
-Here is a example code of `int QxAutoMLWork()`, in this example, we use 100HZ sensor ODR to fill sensor data:
+Here is a example of `int QxAutoMLWork()` implementation, in this example, we use 100HZ sensor ODR to fill sensor data:
 
 ```
 #include "QxAutoMLUser.h"
@@ -132,8 +134,10 @@ int QxAutoMLWork()
 }
 ```
 🔹 `2. void NativeFillDataFrame()`
+
    Description:
-    This function need to be implemented by customer, it calls `void QxFillSensorData()` to fill sensor data which are enabled in 'QxAutoMLUser.h'
+    This function need to be implemented by customer, it calls `void QxFillSensorData()` to fill sensor data which are enabled in 'QxAutoMLUser.h'.
+    
     An example of its implementation is shown below: (take STWINKT1B board as example)
     
 ```
@@ -161,7 +165,7 @@ void NativeFillDataFrame(void)
 }
 
 ```
-`void QxFillSensorData()`  is provided by `libQxClassifyEngine.a`
+Where`void QxFillSensorData()`  is provided by 'libQxClassifyEngine.a'
 ```
     extern void QxFillSensorData(QXOSensorType type, void* data, int data_len);
 ```
@@ -169,12 +173,13 @@ void NativeFillDataFrame(void)
       Fill sensor data to Qeexo classify engine.
       
   Parameters:
-`QXOSensorType`: Sensor type Enum defined in QxAutoMLUser.h
+  
+`QXOSensorType type`:  Sensor type Enum defined in QxAutoMLUser.h
      
-`data` The data buff pointer, for 3-axis sensor data, the data structure is shown as below:
+` void* data`:  The data buff pointer, for 3-axis sensor data, the data structure is shown as below:
      
-     ![](https://github.com/leomonan/listdelsame/blob/master/3-axis_data_format.jpg?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
-Each axis data takes 2 bytes space, 3-axis data take 6 bytes space, below is the example of 3-axis data struct declaration:
+![](https://github.com/leomonan/listdelsame/blob/master/3-axis_data_format.jpg?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
+Each axis data takes 2 bytes space, so 3-axis data take 6 bytes space, below is an example of 3-axis data struct declaration:
    ```
    typedef struct
    {
@@ -187,9 +192,11 @@ Each axis data takes 2 bytes space, 3-axis data take 6 bytes space, below is the
     
     
 3. `void NativelInitSensor(void)`
+
 This function initializes the device sensor driver parameters that are defined in 'QxAutoMLUser.h'
 
- Here is an example of the implementation of this function, please notice that QXAUTOMLCONFIG_SENSOR_ACCEL_ODR/QXAUTOMLCONFIG_SENSOR_ACCEL_FSR/QXAUTOMLCONFIG_SENSOR_GYRO_ODR/QXAUTOMLCONFIG_SENSOR_GYRO_FSR are defined in 'QxAutoMLUser.h': 
+ Here is an example of the implementation of this function, please notice that
+`QXAUTOMLCONFIG_SENSOR_ACCEL_ODR`, `QXAUTOMLCONFIG_SENSOR_ACCEL_FSR`, `QXAUTOMLCONFIG_SENSOR_GYRO_ODR`, and  `QXAUTOMLCONFIG_SENSOR_GYRO_FSR` are defined in 'QxAutoMLUser.h': 
 ```
 #include "QxAutoMLUser.h"
 void NativelInitSensor(void)
@@ -219,10 +226,11 @@ void NativelInitSensor(void)
 ```
 
 4. Native OS tick funtions
-     `void NativeOSDelay(int msec)` provides a tick value in millisecond.
-     `int NativeOSGetTick()` gets tick counter in millisecond unit.
 
- ### Run `int QxAutoMLWork()` in the your application
+     `void NativeOSDelay(int msec)`: Provides a tick value in millisecond.
+     `int NativeOSGetTick()`: Gets tick counter in millisecond unit.
+
+ ### Step 3. Run `int QxAutoMLWork()` in the your application
   After finished all of above steps, function `int QxAutoMLWork()` gets ready to run in any thread loop that you want to do the classification. 
 
 ```
