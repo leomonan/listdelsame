@@ -51,7 +51,7 @@ This file inclde the following parts:
 ```
  2. FS and ODR of Enabled Sensors
  
- The sensor FS and ODR will be defined in this file if the sensor(s) is(are) enabled  
+ The sensor FS and ODR will be defined in this file if the sensor(s) is(are) enabled.
  
  Example:
  ```
@@ -75,7 +75,7 @@ This type enumerated the sensor type that sensor data comes from.
 ```
 ##### Classify Interfaces Declaration
 
-  There are two interfaces that is provided by the library, they are:
+The static engine library provided two interfaces for customer, they are:
 ```
 1.void QxFillSensorData(QXOSensorType type, void* data, int data_len);
 ```
@@ -87,14 +87,13 @@ You can call this function to fill the sensor data to static engine library in e
    You can call this funtion to trigger the classify action in static engine library
    
 
-##### Classify interval
+##### Classify Interval
 ```
 #define PRED_CLASSIFICATION_INTERVAL_IN_MSECS 153
 ```
-   This macro defines the calling interval of `int QxClassify(void)`
+   This macro defines the calling interval of `int QxClassify(void)`, '153' indicates `int QxClassify(void)` should be called in each 153 milliseconds
 
-   '153' indicates `int QxClassify(void)` should be called in each 153 milliseconds
-   
+
 
 ### Step 2. Implement essential functions to fill sensor data and call classification API
 
