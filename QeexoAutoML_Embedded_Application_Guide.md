@@ -27,7 +27,7 @@ A few interfaces are needed to be implemented to port the classify function to y
 #### 🔹 QxAutoMLUser.h
 This file contains the sensor configurations and API declarations of the static engine library, the content of sensor configurations are automatically generated from customer's sensor configuration in WebUI's data collection page.
 
-This file inclde the following parts
+This file inclde the following parts:
 
  ##### Sensor Configuration
  1. Enabled Sensor Types
