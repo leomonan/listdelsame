@@ -99,7 +99,7 @@ You can call this function to fill the sensor data to static engine library in e
 
 The below diagram shows how Qeexo classify interfaces should run in your device: 
 ![](https://github.com/leomonan/listdelsame/blob/master/QeexoAutomlStaticEngineUserProcess.png?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
-From the diagram we can know, Qeexo static engine library provide two interface `void QxFillSensorData()` and `void QxClassify()`
+From the diagram we can know, Qeexo static engine library provides two interface: `void QxFillSensorData()` and `void QxClassify()`, customer need to implment a funtion named `int QxAutoMLWork()` that calls these two interfaces to fill sensor data and do classification in periods of time.
 
 
 🔹 1. `int QxAutoMLWork()` 
