@@ -149,7 +149,8 @@ int QxAutoMLWork()
 }
 ```
 
-`Note: if you are using an ODR close to 100HZ that did the data collection (e.g. 104HZ), use 100HZ here is okay, will not effect too much on performance, and if you are using a ODR high than 100HZ, we recommand you to use sensor FIFO mode to fill data, for more details, please refer to: https://github.com/leomonan/listdelsame/blob/master/QeexoAutoML_Embedded_Application_Guide.md#integrate-library-by-using-fifo-mode-to-fill-sesor-data-in-case-of-high-odr`
+`Note: if you are using an ODR close to 100HZ that did the data collection (e.g. 104HZ), use 100HZ here is okay, will not effect too much on performance, and if you are using a ODR high than 100HZ, we recommand you to use sensor FIFO mode to fill data, for more details, please refer to:`  
+https://github.com/leomonan/listdelsame/blob/master/QeexoAutoML_Embedded_Application_Guide.md#integrate-library-by-using-fifo-mode-to-fill-sesor-data-in-case-of-high-odr
 
 🔹 `2. void NativeFillDataFrame()`
 
@@ -277,7 +278,7 @@ void applicatioin_thread_loop()
 
 
 ## Integrate Library By Using FIFO mode to fill sesor data in case of high ODR 
-If you trained static engine library using the ODR that is higher than 200HZ, we recommend you enable the Sensor FIFO to fill the data to get good performance.
+If you trained static engine library using the ODR that is higher than 208HZ, we recommend you enable the Sensor FIFO to fill the data to get good performance.
 
 Here is the diagram of FIFO data fill integration:
 ![](https://github.com/leomonan/listdelsame/blob/master/QeexoAutomlStaticEngineUserProcessFIFO.png?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
@@ -293,7 +294,7 @@ Diagram4, FIFO data fill for high ODR mode
       ```
      Please notice in this case, the input parameter `data_len` shoud be multiple of 6, not 6, this depends on how much data left in sensor FIFO buffer.
     
-So an example of `void NativeFillDataFrame(void)` implementation for FIFO mode is like below
+An example of `void NativeFillDataFrame(void)` implementation for FIFO mode is shown below:
      
 ```
 #include "QxAutoMLUser.h"
