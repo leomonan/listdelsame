@@ -11,7 +11,7 @@
 You can download the static engine library package from the  AutoML WebUI's Models page, as shown in below picture: 
 
 ![](https://github.com/leomonan/listdelsame/blob/master/download_the_static_library_package.jpg?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
-                                                            Diagram1, download statich engine library package
+Diagram1, download statich engine library package
 
 Please click 'save .zip'  to save the static engine library package to your local path, the file will be saved with the name of {board_name}_{algorithm}\_{version}_static.zip,  take STWINKT1B board as example, if you choose the gbm algorithm to train the model, you will get 'STWIN-gbm-1.0-static.zip'. 
 
@@ -103,7 +103,8 @@ If you trained static engine library using the ODR that is equal or lower than 2
 
 The below diagram shows how Qeexo classify interfaces should run in your device: 
 ![](https://github.com/leomonan/listdelsame/blob/master/QeexoAutomlStaticEngineUserProcess.png?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
-                                                                Diagram2, polling data fill for low ODR mode
+Diagram2, polling data fill for low ODR mode
+                                                                
 From the diagram we can know, Qeexo static engine library provides two interface: `void QxFillSensorData()` and `void QxClassify()`, customer need to implment a funtion named `int QxAutoMLWork()` that calls these two interfaces to fill sensor data and do classification in periods of time.
 
 
@@ -147,7 +148,7 @@ int QxAutoMLWork()
 }
 ```
 
-`Note: if you are using an ODR close to 100HZ that did the data collection (e.g. 104HZ), use 100HZ here is okay, will not effect too much on performance, and if you are using a ODR high than 100HZ, we recommand you to use sensor FIFO mode to fill data, for more details, please refer to: (link)[title]`
+`Note: if you are using an ODR close to 100HZ that did the data collection (e.g. 104HZ), use 100HZ here is okay, will not effect too much on performance, and if you are using a ODR high than 100HZ, we recommand you to use sensor FIFO mode to fill data, for more details, please refer to: https://github.com/leomonan/listdelsame/blob/master/QeexoAutoML_Embedded_Application_Guide.md#integrate-library-by-using-fifo-mode-to-fill-sesor-data-in-case-of-high-odr`
 
 🔹 `2. void NativeFillDataFrame()`
 
@@ -196,7 +197,7 @@ Fill sensor data to Qeexo classify engine.
 ` void* data`:  The data buff pointer, for 3-axis sensor data, the data structure is shown as below:
      
 ![](https://github.com/leomonan/listdelsame/blob/master/3-axis_data_format.jpg?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
-                                                                     Diagram3, data format of 3-axis sensor data
+Diagram3, data format of 3-axis sensor data
 
 Each axis data takes 2 bytes space, so 3-axis data take 6 bytes space, below is an example of 3-axis data struct definition:
    ```
@@ -279,7 +280,7 @@ If you trained static engine library using the ODR that is higher than 200HZ, we
 
 Here is the diagram of FIFO data fill integration:
 ![](https://github.com/leomonan/listdelsame/blob/master/QeexoAutomlStaticEngineUserProcessFIFO.png?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
-                                                                 Diagram4, FIFO data fill for high ODR mode
+Diagram4, FIFO data fill for high ODR mode
 
  Comparing to `Diagram2, polling data fill for low ODR mode`,  there are two differences that we highlighted.
  🔹First Diff:  Loop interval, for FIFO mode, please use a loop interval that can read all sensor data from senor FIFO buffer in time, usually, higher ODR need shorter loop interval,
@@ -324,9 +325,9 @@ void NativeFillDataFrame(void)
 
 ```
 
-Congratulations! The integration of AutoML static engine library is done, now please compile your project to build and link all funstions for classification, if everything goes okay, you should see the classification runs as good as what you see in WebUI's model LIVE test.
+#### Congratulations! The integration of AutoML static engine library is done, now please compile your project to build and link all funstions for classification, if everything goes okay, you should see the classification runs as good as what you see in WebUI's model LIVE test.
 
-####Tips:  If you got link error like:
+#### Tips:  If you got link error like:
 ```
 undefined reference to `arm_cfft_f32'
 ```
