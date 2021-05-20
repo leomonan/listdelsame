@@ -277,7 +277,7 @@ void applicatioin_thread_loop()
 ```
 
 
-## Integrate Library By Using FIFO mode to fill sesor data in case of high ODR 
+## Integrate Library By Using FIFO Mode to Fill Sensor Data in Case of High ODR 
 If you trained static engine library using the ODR that is higher than 208HZ, we recommend you enable the Sensor FIFO to fill the data to get good performance.
 
 Here is the diagram of FIFO data fill integration:
