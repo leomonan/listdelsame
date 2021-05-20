@@ -287,12 +287,14 @@ Diagram4, FIFO data fill for high ODR mode
 
 
  Comparing to `Diagram2, polling data fill for low ODR mode`,  there are two differences that we highlighted.
+ 
  🔹First Diff:  Loop interval, for FIFO mode, please use a loop interval that can read all sensor data from senor FIFO buffer in time, usually, higher ODR need shorter loop interval,
+ 
  🔹Second Diff: Fill data length, for FIFO mode, please read all sensor data from FIFO and fill it by calling:
-      ```
+```
      extern void QxFillSensorData(QXOSensorType type, void* data, int data_len);
-      ```
-     Please notice in this case, the input parameter `data_len` shoud be multiple of 6, not 6, this depends on how much data left in sensor FIFO buffer.
+```
+Please notice in this case, the input parameter `data_len` shoud be multiple of 6, not 6, this depends on how much data left in sensor FIFO buffer.
     
 An example of `void NativeFillDataFrame(void)` implementation for FIFO mode is shown below:
      
