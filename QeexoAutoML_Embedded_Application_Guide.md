@@ -103,6 +103,7 @@ If you trained static engine library using the ODR that is equal or lower than 2
 
 The below diagram shows how Qeexo classify interfaces should run in your device: 
 ![](https://github.com/leomonan/listdelsame/blob/master/QeexoAutomlStaticEngineUserProcess.png?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
+
 Diagram2, polling data fill for low ODR mode
                                                                 
 From the diagram we can know, Qeexo static engine library provides two interface: `void QxFillSensorData()` and `void QxClassify()`, customer need to implment a funtion named `int QxAutoMLWork()` that calls these two interfaces to fill sensor data and do classification in periods of time.
@@ -280,7 +281,9 @@ If you trained static engine library using the ODR that is higher than 200HZ, we
 
 Here is the diagram of FIFO data fill integration:
 ![](https://github.com/leomonan/listdelsame/blob/master/QeexoAutomlStaticEngineUserProcessFIFO.png?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
+
 Diagram4, FIFO data fill for high ODR mode
+
 
  Comparing to `Diagram2, polling data fill for low ODR mode`,  there are two differences that we highlighted.
  🔹First Diff:  Loop interval, for FIFO mode, please use a loop interval that can read all sensor data from senor FIFO buffer in time, usually, higher ODR need shorter loop interval,
