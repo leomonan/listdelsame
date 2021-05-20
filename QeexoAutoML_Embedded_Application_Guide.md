@@ -107,7 +107,7 @@ From the diagram we can know, Qeexo static engine library provides two interface
 `int QxAutoMLWork()` is a function implemented by customer which will run in a thread loop, it calls `void QxFillSensorData()` to fill sensor data to the classify engine in each ODR circle, and call `in QxClassify()` in each PRED_CLASSIFICATION_INTERVAL_IN_MSECS interval which defined in 'QxAutoMLUser.h'
 
 
-Here is a example of `int QxAutoMLWork()` implementation, in this example, we use 100HZ sensor ODR to fill sensor data, so the data fill interval is 1000/100Hz = 10 ms :
+Here is an example of `int QxAutoMLWork()` implementation, in this example, we use 100HZ sensor ODR to fill sensor data, so the data fill interval is 1000/100Hz = 10 ms :
 
 ```
 #include "QxAutoMLUser.h"
@@ -141,6 +141,9 @@ int QxAutoMLWork()
     return result;
 }
 ```
+
+`Note: if you are using an ODR close to 100HZ that did the data collection (e.g. 104HZ), use 100HZ here is okay, will not effect too much on performance, and if you are using a ODR high than 100HZ, we recommand you to use sensor FIFO mode to fill data, for more details, please refer to: (link)[title]`
+
 🔹 `2. void NativeFillDataFrame()`
 
    Description:
@@ -197,7 +200,7 @@ Each axis data takes 2 bytes space, so 3-axis data take 6 bytes space, below is 
      int16_t z;
    } BSP_MOTION_SENSOR_AxesRaw_t;
 ```
-   `int data_len`:  The data length of sensor data buffer, should be the multiple of 6(size of 3-axis sensor data).
+   `int data_len`:  The data length of sensor data buffer, here should 6(size of 3-axis sensor data).
 
 3. `void NativelInitSensor(void)`
 
@@ -272,3 +275,8 @@ void applicatioin_thread_loop()
   undefined reference to `arm_cfft_f32'
 ```
   Please modify your project's build configuration to add CMSIS arm_cortexM4lf_math library to your target linking.
+
+
+## Use FIFO mode to fill sesor data in case of ODR higher than 100HZ
+
+![](https://github.com/leomonan/listdelsame/blob/master/QeexoAutomlStaticEngineUserProcessFIFO.png?token=AGRW7CKHCT6HMMUYIL6EWVDAUSZWM)
